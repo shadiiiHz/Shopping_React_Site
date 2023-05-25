@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 const Icon = styled.div`
 
-  margin: 15px 30px 0px;
+  margin: 15px 30px 10px;
   font-weight: 500;
   display: flex;
   flex-direction: row;
@@ -29,7 +29,7 @@ const Title = styled.h5`
 `;
 const P = styled.p`
   font-weight: 500;
-  margin-top: 20px;
+  margin-top: 10px;
 
   &:hover {
     color: #fd7e14;

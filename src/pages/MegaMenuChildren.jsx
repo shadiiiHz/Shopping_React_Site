@@ -40,7 +40,7 @@ const Title = styled.h5`
 const Des = styled.h5`
   font-weight: 400;
   font-size: 17px;
-  margin: 25px 0px 0px 25px;
+  margin: 25px 0px 17px 25px;
   line-height: 1.5;
 `;
 const Hr = styled.hr`
@@ -55,25 +55,28 @@ function MegaMenuChildren() {
   const [description, setDescription] = useState("");
   const [children, setChildren] = useState([]);
   const [title, setTitle] = useState("");
-//   const [sentence, setSentence] = useState([]);
- 
+  //   const [sentence, setSentence] = useState([]);
+  let res = [];
   useEffect(() => {
     axios
       .get(
         `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/${slug}`
       )
       .then((response) => {
-        // let letter = [];
-        // letter = response.data.body.description.split(";");
-        // console.log(letter);
-        // for (let i = 0; i < letter.length; i++) {
-        //     if (letter[i].includes(slug)) {
-        //       console.log("i", letter[i]);
-              
-        //     }
-        //   }
-        setDescription(response.data.body.description.split(";")[8]);
-        setTitle(response.data.body.description.split(";")[2]);
+        res = response.data.body.description
+          .replaceAll(";/h2&gt;&lt;hr&gt;&lt;p&gt;", "+")
+          .replaceAll("&lt;h2&gt;", "+")
+          .replaceAll("&lt;/p&gt;", "+")
+          .replaceAll("&lt", "+")
+          .replaceAll(";h2 class=&quot;test&quot;&gt;", "+")
+          .split("+");
+        if (response.data.body.title === "Messestände") {
+          setDescription(res[4]);
+          setTitle(res[2]);
+        } else {
+          setDescription(res[3]);
+          setTitle(res[1]);
+        }
       })
       .catch((error) => {
         // handle error
@@ -92,7 +95,7 @@ function MegaMenuChildren() {
         // handle error
       });
   }, []);
-  
+
   return (
     <>
       <Container>
