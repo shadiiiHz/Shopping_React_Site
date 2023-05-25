@@ -10,6 +10,7 @@ import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 function MegaMenu() {
+
   const menuRef = useRef();
   const menuOverlayRef = useRef();
   const subMenuRef = useRef();
@@ -123,8 +124,8 @@ function MegaMenu() {
                   {/* <pre>{JSON.stringify(menu)} </pre> */}
                   {menu.map((m) => {
                     return (
-                      <li className="menu-item-has-children">
-                        <a href="#" ref={titleRef}>
+                      <li className="menu-item-has-children" key={m.menu_id}>
+                        <a href={`/${m.slug.charAt(0).toUpperCase() + m.slug.slice(1)}`} ref={titleRef}>
                           {m.title.toUpperCase() + " "}
                           {m.children && (
                             <i className="fa fa-angle-down" ref={iRef}></i>
@@ -137,7 +138,7 @@ function MegaMenu() {
                           {m.children &&
                             m.children.map((mc) => {
                               return (
-                                <div className="list-item text-center">
+                                <div className="list-item text-center" key={mc.slug}>
                                   <a>
                                     <img
                                       src={`https://new-api.sevendisplays.com/storage/image/menu/${mc.thumbnail_image}`}
