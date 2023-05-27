@@ -16,7 +16,7 @@ export const getMegaMenu = async (dispatch) => {
   dispatch(getMegaMenuStart());
   try {
     const res = await publicRequest.get(`/api/v1/user/site/menus/mega`);
-    console.log(res.data.body);
+    // console.log(res.data.body);
     dispatch(getMegaMenuSuccess(res.data.body));
   } catch (err) {
     dispatch(getMegaMenuFailure());

@@ -31,7 +31,7 @@ function Breadcrumb({ breadcrumb }) {
             </Link>
             {breadcrumb &&
               breadcrumb.map((b) => {
-                if (parseInt(b.level) === breadCrumbLength) {
+                if ( parseInt(b.level) === breadCrumbLength) {
                   return (
                     <Typography color="text.primary">{b.title}</Typography>
                   );

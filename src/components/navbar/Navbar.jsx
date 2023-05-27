@@ -14,9 +14,13 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  margin:  0px 100px;
+  margin: 0px 100px;
   height: 100px;
-  ${mobile({ flexDirection: "column" , height: "200px" ,justifyContent: "center"})}
+  ${mobile({
+    flexDirection: "column",
+    height: "200px",
+    justifyContent: "center",
+  })}
 `;
 
 const Left = styled.div`
@@ -24,26 +28,24 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   color: #959180;
- 
 `;
 
 const Center = styled.div`
   flex: 1;
   text-align: center;
- 
 `;
 
 const Logo = styled.img`
   width: 300px;
   height: 150px;
-  ${mobile({   width: "250px"})}
+  ${mobile({ width: "250px" })}
 `;
 const Right = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  ${mobile({  justifyContent: "center" , margin: " 0px 30px"})}
+  ${mobile({ justifyContent: "center", margin: " 0px 30px" })}
 `;
 
 const MenuItems = styled.div`
@@ -54,7 +56,6 @@ const MenuItems = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 `;
 const SearchContainer = styled.div`
   border: 0.5px solid #959180;
@@ -71,8 +72,6 @@ const Input = styled.input`
   &:focus {
     outline: none;
   }
-
-
 `;
 
 function Navbar() {
@@ -90,44 +89,40 @@ function Navbar() {
 
   return (
     <>
-     
-   
-        <Container>
-          <Left>
+      <Container>
+        <Left>
+          <Link to={"/"} style={{ textDecoration: "none", color: "black" }}>
             <Logo src="https://new.sevendisplays.com/_nuxt/img/seven-logo.921eb25.svg"></Logo>
-          </Left>
-          <Center>
-            <SearchContainer>
-              <Input
-                placeholder="Suchbegriff(e) eingeben"
-                style={{ flex: "90%" }}
-              />
-              <SearchIcon style={{ color: "black", fontSize: 30 }} />
-            </SearchContainer>
-          </Center>
-          <Right>
+          </Link>
+        </Left>
+        <Center>
+          <SearchContainer>
+            <Input
+              placeholder="Suchbegriff(e) eingeben"
+              style={{ flex: "90%" }}
+            />
+            <SearchIcon style={{ color: "black", fontSize: 30 }} />
+          </SearchContainer>
+        </Center>
+        <Right>
+          <MenuItems>
+            <StarBorderIcon />
+            Marklist
+          </MenuItems>
+          <Link to="/login" style={{ textDecoration: "none", color: "black" }}>
             <MenuItems>
-              <StarBorderIcon />
-              Marklist
+              <PersonOutlineOutlinedIcon />
+              {isUser ? "Logout" : "Login"}
             </MenuItems>
-            <Link
-              to="/login"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <MenuItems>
-                <PersonOutlineOutlinedIcon />
-                {isUser ? "Logout" : "Login"}
-              </MenuItems>
-            </Link>
-            <MenuItems>
-              <Badge badgeContent={0} color="success">
-                <ShoppingCartIcon />
-              </Badge>
-              Warenkorb
-            </MenuItems>
-          </Right>
-        </Container>
-  
+          </Link>
+          <MenuItems>
+            <Badge badgeContent={0} color="success">
+              <ShoppingCartIcon />
+            </Badge>
+            Warenkorb
+          </MenuItems>
+        </Right>
+      </Container>
     </>
   );
 }
