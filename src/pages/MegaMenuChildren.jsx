@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Announcement from "../components/announcment/Announcement";
+import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import MenuChild from "../components/megaMenuChild/MenuChild";
 
 import MegaMenu from "../components/menu/MegaMenu";
@@ -55,7 +56,7 @@ function MegaMenuChildren() {
   const [description, setDescription] = useState("");
   const [children, setChildren] = useState([]);
   const [title, setTitle] = useState("");
-  //   const [sentence, setSentence] = useState([]);
+  const [breadcrumb, setBreadcrumb] = useState([]);
   let res = [];
   useEffect(() => {
     axios
@@ -95,13 +96,27 @@ function MegaMenuChildren() {
         // handle error
       });
   }, []);
-
+  useEffect(() => {
+    axios
+      .get(
+        `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/menu/breadcrumb?menu_slug=${slug}`
+      )
+      .then((response) => {
+        console.log(response.data.body);
+        setBreadcrumb(response.data.body);
+       
+      })
+      .catch((error) => {
+        // handle error
+      });
+  }, []);
   return (
     <>
       <Container>
         <Announcement />
         <Navbar />
         <MegaMenu />
+        <Breadcrumb breadcrumb={breadcrumb}/>
         <Wrapper>
           <Sidebar />
           <DesChildren>

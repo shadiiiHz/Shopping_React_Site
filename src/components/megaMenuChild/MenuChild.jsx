@@ -16,7 +16,7 @@ const Container = styled.div`
   background-color: #fff;
   flex-direction: column;
   position: relative;
-  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   &:hover {
     border-left: 3px solid #fc6c00;
     box-shadow: 0 0 10px #ccc;
@@ -29,7 +29,7 @@ const Title = styled.h1`
   font-weight: bold;
 `;
 const Image = styled.img`
-  height: 60%;
+  height: 70%;
 `;
 const Btn = styled.button`
   background-color: #333;
@@ -44,7 +44,13 @@ function MenuChild({ slug, child }) {
   // console.log(slug);
 
   const Slug = slug.charAt(0).toUpperCase() + slug.slice(1);
-  // console.log(Slug);
+  // console.log(child.slug);
+  let ChildSlug = child.slug.split("-");
+  for (let i = 0; i < ChildSlug.length; i++) {
+    ChildSlug[i] = ChildSlug[i][0].toUpperCase() + ChildSlug[i].substr(1);
+  }
+  ChildSlug = ChildSlug.join("-");
+
   return (
     <>
       <Container>
@@ -52,23 +58,13 @@ function MenuChild({ slug, child }) {
         <Image
           src={`https://new-api.sevendisplays.com/storage/image/menu/${child.menu_info.thumbnail_image}`}
         ></Image>
-        {child.title.indexOf(" ") >= 0 ? (
-          <Link
-            to={`${child.title.replace(" ", "-")}`}
-            style={{ textDecoration: "none" }}
-          >
-            <Btn>
-              Produktübersicht <ArrowRightIcon />
-            </Btn>
-          </Link>
-        ) : (
-          <Link to={`${child.title}`} style={{ textDecoration: "none" }}>
-            <Btn>
-              Produktübersicht
-              <ArrowRightIcon />
-            </Btn>
-          </Link>
-        )}
+
+        <Link to={`${ChildSlug}`} style={{ textDecoration: "none" }}>
+          <Btn>
+            Produktübersicht
+            <ArrowRightIcon />
+          </Btn>
+        </Link>
       </Container>
     </>
   );
