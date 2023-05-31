@@ -4,16 +4,14 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Announcement from "../components/announcment/Announcement";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
-import MenuChild from "../components/megaMenuChild/MenuChild";
-
 import MegaMenu from "../components/menu/MegaMenu";
 import Navbar from "../components/navbar/Navbar";
 import Sidebar from "../components/sidbar/Sidebar";
-
+import SubMenuChild from "../components/subMenuChild/SubMenuChild";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 2500px;
+  
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -33,55 +31,43 @@ const DesChildren = styled.div`
   justify-content: start;
   background-color: white;
 `;
-const Title = styled.h5`
-  font-weight: 650;
-  font-size: 20px;
-  margin: 25px 0px 0px 25px;
-`;
-const Des = styled.h5`
-  font-weight: 400;
-  font-size: 17px;
-  margin: 25px 0px 17px 25px;
-  line-height: 1.5;
-`;
-const Hr = styled.hr`
-  display: block;
-  margin: 25px 0px 0px 25px;
-  border-style: inset;
-  border-width: 1.5px;
+const CoverImage = styled.img`
+  margin: 0px 100px;
+  height: 400px;
+  width: 1320px;
 `;
 const Section = styled.div`
-  margin: 0px 0px 0px 25px;
+  margin: 30px 100px 0px 100px;
+  a{
+    text-decoration: none;
+  }
 `;
-function MegaMenuChildren() {
+function SubMenuChildren() {
+  ////////////slug////////////
   const location = useLocation();
-  const slug = location.pathname.split("/")[1];
-
-  const [text, setText] = useState("");
-  const [children, setChildren] = useState([]);
+  let slug = location.pathname.split("/")[2];
+ 
+  slug = slug.charAt(0).toLowerCase() + slug.slice(1);
+  let Slug = slug.split("-");
+  for (let i = 0; i < Slug.length; i++) {
+    Slug[i] = Slug[i][0].toLowerCase() + Slug[i].substr(1);
+  }
+  Slug = Slug.join("-");
+  //   console.log(Slug);
 
   const [breadcrumb, setBreadcrumb] = useState([]);
+  const [text, setText] = useState("");
+  const [product, setProduct] = useState([]);
+  const [cover_image, setCover_image] = useState("");
 
   useEffect(() => {
     axios
       .get(
-        `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/${slug}`
-      )
-      .then((response) => {
-        setText(response.data.body.description);
-      })
-      .catch((error) => {
-        // handle error
-      });
-  }, []);
-  useEffect(() => {
-    axios
-      .get(
-        `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/children/${slug}`
+        `https://new-api.sevendisplays.com/api/v1/user/site/middle-page/products/${Slug}?per_page=30&order_by=DESC`
       )
       .then((response) => {
         // console.log(response.data.body);
-        setChildren(response.data.body);
+        setProduct(response.data.body.data);
       })
       .catch((error) => {
         // handle error
@@ -90,16 +76,31 @@ function MegaMenuChildren() {
   useEffect(() => {
     axios
       .get(
-        `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/menu/breadcrumb?menu_slug=${slug}`
+        `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/${Slug}`
       )
       .then((response) => {
-        console.log(response.data.body);
+        setText(response.data.body.description);
+        setCover_image(response?.data?.body?.cover_image[0]?.path);
+    
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get(
+        `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/menu/breadcrumb?menu_slug=${Slug}`
+      )
+      .then((response) => {
+        //   console.log(response.data.body);
         setBreadcrumb(response.data.body);
       })
       .catch((error) => {
         // handle error
       });
   }, []);
+  /////////////////decodeHTMLEntities////////////////////////////
   var element = document.createElement("div");
   function decodeHTMLEntities(str) {
     if (str && typeof str === "string") {
@@ -120,23 +121,37 @@ function MegaMenuChildren() {
         <Announcement />
         <Navbar />
         <MegaMenu />
+        {cover_image !== undefined ? (
+          <CoverImage
+            src={`https://new-api.sevendisplays.com/storage/image/menu/${cover_image}`}
+          ></CoverImage>
+        ) : (
+          ""
+        )}
         <Breadcrumb breadcrumb={breadcrumb} />
         <Wrapper>
           <Sidebar />
           <DesChildren>
-            <Section
-              dangerouslySetInnerHTML={{ __html: decodeHTMLEntities(text) }}
-            />
             <Children>
-              {children.map((child) => {
-                return <MenuChild slug={slug} child={child} key={child.id} />;
+              {product.map((p , index) => {
+                return (
+                  <SubMenuChild
+                    slug={slug}
+                  
+                    product={product[index]}
+                    key={p.product_id}
+                  />
+                );
               })}
             </Children>
           </DesChildren>
         </Wrapper>
+        <Section
+          dangerouslySetInnerHTML={{ __html: decodeHTMLEntities(text) }}
+        />
       </Container>
     </>
   );
 }
 
-export default MegaMenuChildren;
+export default SubMenuChildren;

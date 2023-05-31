@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { keyframes } from "styled-components";
 const Container = styled.div`
   flex: 1;
   margin: 10px;
@@ -40,9 +41,39 @@ const Btn = styled.button`
   text-transform: uppercase;
   margin: 10px 0px;
 `;
+const ImgNotFound = styled.div`
+  
+  background-color: #fff;
+  width: 230px;
+`;
+const PlaceHolderShimmer = keyframes`
+0% {
+  background-position: -800px 0;
+}
+100% {
+  background-position: 800px 0;
+}
+`;
+const AnimatedBackground = styled.div`
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: ${PlaceHolderShimmer};
+  animation-timing-function: linear;
+  background-color: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%);
+  background-size: 700px 104px;
+  height: 243px;
+  width: 230px;
+  position: relative;
+`;
+const BackgroundMasker = styled.div`
+  background-color: #fff;
+  position: absolute;
+`;
 function MenuChild({ slug, child }) {
   // console.log(slug);
-
+  const [Error, setError] = useState(false);
   const Slug = slug.charAt(0).toUpperCase() + slug.slice(1);
   // console.log(child.slug);
   let ChildSlug = child.slug.split("-");
@@ -55,9 +86,22 @@ function MenuChild({ slug, child }) {
     <>
       <Container>
         <Title>{child.title}</Title>
-        <Image
-          src={`https://new-api.sevendisplays.com/storage/image/menu/${child.menu_info.thumbnail_image}`}
-        ></Image>
+
+        {Error ? (
+          <ImgNotFound>
+            <AnimatedBackground>
+              <BackgroundMasker></BackgroundMasker>
+            </AnimatedBackground>
+          </ImgNotFound>
+        ) : (
+          <Image
+            src={`https://new-api.sevendisplays.com/storage/image/menu/${child.menu_info.thumbnail_image}`}
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              setError(true);
+            }}
+          ></Image>
+        )}
 
         <Link to={`${ChildSlug}`} style={{ textDecoration: "none" }}>
           <Btn>

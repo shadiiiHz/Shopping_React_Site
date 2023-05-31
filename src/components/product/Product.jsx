@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { mobile } from "../../responsive";
 const Container = styled.div`
   flex: 1;
   margin: 10px;
@@ -22,6 +23,13 @@ const Container = styled.div`
     border-left: 3px solid #fc6c00;
     box-shadow: 0 0 10px #ccc;
   }
+  ${mobile({
+    minWidth: "470px",
+    maxWidth: "470px",
+    height: "320px",
+    justifyContent: "center",
+    marginLeft: " 0px",
+  })}
 `;
 const Title = styled.h1`
   color: black;
@@ -59,13 +67,13 @@ const Btn = styled.button`
   margin: 10px 0px;
 `;
 function Product({ product, index }) {
-  // console.log()
+
   const route = product[
     index
-  ].product_info.default_menu.menu_t.title.replaceAll(" ", "-");
+  ].product_info?.default_menu?.menu_t?.title?.replaceAll(" ", "-");
   const parentRoute =
-    product[index].product_info.default_menu.parent.menu_t.title;
-
+    product[index].product_info?.default_menu?.parent?.menu_t?.title;
+console.log( product[index])
   //translate to german
   function makeSortString(s) {
     var translate = {
@@ -83,11 +91,11 @@ function Product({ product, index }) {
   }
   //slug
   const slug = product[index].slug;
-    let productSlug = slug.split("-");
-    for (let i = 0; i < productSlug.length; i++) {
-        productSlug[i] = productSlug[i][0].toUpperCase() + productSlug[i].substr(1);
-    }
-    productSlug = productSlug.join("-");
+  let productSlug = slug.split("-");
+  for (let i = 0; i < productSlug.length; i++) {
+    productSlug[i] = productSlug[i][0].toUpperCase() + productSlug[i].substr(1);
+  }
+  productSlug = productSlug.join("-");
 
   return (
     <>
@@ -105,9 +113,10 @@ function Product({ product, index }) {
           </PriceInfo>
         </Price>
         <Link
-          to={`${makeSortString(parentRoute)}/${route}/${productSlug}`}
+         to={`${makeSortString(parentRoute)}/${route}/${productSlug}`}
           style={{ textDecoration: "none" }}
         >
+          {/* to={`${makeSortString(parentRoute)}/${route}/${productSlug}`} */}
           <Btn>
             Zur Produktseite
             <ArrowRightIcon />

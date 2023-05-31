@@ -20,7 +20,7 @@ function Breadcrumb({ breadcrumb }) {
   return (
     <>
       <Container>
-        <div role="presentation" >
+        <div role="presentation">
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               underline="hover"
@@ -31,15 +31,24 @@ function Breadcrumb({ breadcrumb }) {
             </Link>
             {breadcrumb &&
               breadcrumb.map((b) => {
-                if ( parseInt(b.level) === breadCrumbLength) {
+                console.log(b);
+                if (parseInt(b.level) === breadCrumbLength) {
                   return (
                     <Typography color="text.primary">{b.title}</Typography>
                   );
                 } else {
+    
+                  let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
+                  let Slug = item.split("-");
+                  for (let i = 0; i < Slug.length; i++) {
+                    Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
+                  }
+                  Slug = Slug.join("-");
+               
                   return (
                     <Link
                       underline="hover"
-                      href="/material-ui/getting-started/installation/"
+                      href={`/${Slug}`}
                       style={{ color: "black", textDecoration: "none" }}
                     >
                       {b.title}

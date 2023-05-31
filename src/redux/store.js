@@ -14,6 +14,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import MegaMenuRedux from "./MegaMenuRedux";
+import menuToggle from "./menuToggle";
 import userRedux from "./userRedux";
 
 const persistConfig = {
@@ -25,6 +26,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userRedux,
   megaMenu: MegaMenuRedux,
+  menuToggle: menuToggle
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

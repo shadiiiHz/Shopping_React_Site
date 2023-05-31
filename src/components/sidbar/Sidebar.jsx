@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { getMegaMenu } from "../../redux/apiCalls";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import MenuIcon from "@mui/icons-material/Menu";
+import { mobile } from "../../responsive";
 const Container = styled.div`
   flex: 3;
 
@@ -13,6 +14,9 @@ const Container = styled.div`
   border: 1px solid #e9e9e9;
   display: flex;
   flex-direction: column;
+  ${mobile({
+    display: "none",
+  })}
 `;
 const Icon = styled.div`
 

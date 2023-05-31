@@ -20,6 +20,8 @@ const Container = styled.div`
     flexDirection: "column",
     height: "200px",
     justifyContent: "center",
+    
+
   })}
 `;
 
@@ -33,19 +35,20 @@ const Left = styled.div`
 const Center = styled.div`
   flex: 1;
   text-align: center;
+  ${mobile({display: "none"  })}
 `;
 
 const Logo = styled.img`
   width: 300px;
   height: 150px;
-  ${mobile({ width: "250px" })}
+  ${mobile({ width: "500px" })}
 `;
 const Right = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  ${mobile({ justifyContent: "center", margin: " 0px 30px" })}
+  ${mobile({ justifyContent: "center" })}
 `;
 
 const MenuItems = styled.div`
@@ -57,6 +60,17 @@ const MenuItems = styled.div`
   align-items: center;
   justify-content: center;
 `;
+const SearchMenuItem = styled.div`
+  opacity: 0;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  ${mobile({ opacity: "1" })}
+`;
 const SearchContainer = styled.div`
   border: 0.5px solid #959180;
   display: flex;
@@ -64,7 +78,6 @@ const SearchContainer = styled.div`
   margin-left: 25px;
   padding: 5px;
   border-radius: 8px;
-  ${mobile({ display: "none" })}
 `;
 const Input = styled.input`
   color: gray;
@@ -79,6 +92,7 @@ function Navbar() {
   // console.log(admin);
   let isUser = user;
   const [move, setMove] = useState(false);
+  const [isShownSearch, setIsShownSearch] = useState(false);
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("scroll", () =>
@@ -86,7 +100,9 @@ function Navbar() {
       );
     }
   }, [window.pageYOffset]);
-
+  // const handleClickSearch = () => {
+  //   setIsShownSearch((current) => !current);
+  // };
   return (
     <>
       <Container>
@@ -105,6 +121,10 @@ function Navbar() {
           </SearchContainer>
         </Center>
         <Right>
+          <SearchMenuItem>
+            <SearchIcon />
+            Suche
+          </SearchMenuItem>
           <MenuItems>
             <StarBorderIcon />
             Marklist

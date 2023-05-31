@@ -5,16 +5,26 @@ import styled from "styled-components";
 import Announcement from "../components/announcment/Announcement";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import ImageCarousel from "../components/carousel/ImageCarousel";
+import Footer from "../components/footer/Footer";
 import MegaMenu from "../components/menu/MegaMenu";
 import Navbar from "../components/navbar/Navbar";
 import Product from "../components/product/Product";
 import Sidebar from "../components/sidbar/Sidebar";
 import { getMegaMenu } from "../redux/apiCalls";
+import { mobile } from "../responsive";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
-  height: 2000px;
+  height: 2750px;
+  width: "100vh";
+  
+  ${mobile({
+    height: "5200px",
+    width: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+   
+  })}
 `;
 const Section = styled.div`
   margin: 20px 100px;
@@ -22,18 +32,24 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
+  ${mobile({ margin: " 0px 300px 27px"})}
 `;
 const Home = styled.div`
   display: flex;
   margin: 0px 100px;
   background-color: white;
   height: 1600px;
+  ${mobile({
+    height: "5000px",
+  })}
 `;
 const HomeSecetion = styled.div`
   flex: 9;
   display: flex;
   flex-direction: column;
   justify-content: start;
+  ${mobile({ })}
 `;
 const Products = styled.div`
   padding: 20px;
@@ -41,12 +57,19 @@ const Products = styled.div`
   flex-wrap: wrap;
   justify-content: start;
   background-color: white;
+  display: ${({ open }) => open ? 'none' : ''};
+  ${mobile({
+    alignItems: "center",
+    
+    margin: " 0 auto"
+  })}
 `;
 function HomePage() {
-  const [homeData, setHomeData] = useState([]);
+  
   const [product, setProducts] = useState([]);
   const [description, setDescription] = useState([]);
   const [sliderImage, setSliderImage] = useState([]);
+  const openClose = useSelector((state) => state.menuToggle.menuOpen);
 
   useEffect(() => {
     axios
@@ -55,12 +78,12 @@ function HomePage() {
         setSliderImage(response.data.body.slider_image);
         setDescription(response.data.body.home_info.description);
         setProducts(response.data.body.sections[0].product_t);
-        console.log(response.data.body.slider_image);
+        // console.log(response.data.body);
       })
       .catch((error) => {
         // handle error
       });
-  }, []);
+  }, [openClose]);
   return (
     <>
       <Container>
@@ -72,7 +95,7 @@ function HomePage() {
         <Home>
           <Sidebar />
           <HomeSecetion>
-            <Products>
+            <Products open={openClose}>
               {product.map((p, index) => {
                 return <Product product={product} index={index} key={p.id} />;
               })}
@@ -80,6 +103,7 @@ function HomePage() {
           </HomeSecetion>
         </Home>
         <Section dangerouslySetInnerHTML={{ __html: description }} />
+        
       </Container>
     </>
   );

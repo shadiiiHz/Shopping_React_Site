@@ -1,28 +1,40 @@
 import React, { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import styled from "styled-components";
+import { mobile } from "../../responsive";
 const Container = styled.div`
   height: 800px;
   width: 86.5%;
- 
+
   margin: 0px 100px 20px;
- align-self: center;
+  align-self: center;
+  ${mobile({
+    width: "80%",
+    height: "800px",
+    zIndex: "-999999",
+    
+  })}
+`;
+const Img = styled.img`
+  display: block;
+  width: 100%;
+  height: 500px;
+ 
+  ${mobile({
+ 
+  
+  })}
 `;
 const ImageCarousel = ({ sliderImage }) => {
-  const [index, setIndex] = useState(0);
-
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
   return (
     <Container>
       <Carousel>
         {sliderImage &&
           sliderImage.map((img, index) => {
             return (
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
+              <Carousel.Item key={img.id}>
+                <Img
+                 
                   src={`https://new-api.sevendisplays.com/storage/image/home/slider/${sliderImage[index].path}`}
                   alt="First slide"
                 />

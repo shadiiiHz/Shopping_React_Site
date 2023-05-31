@@ -11,6 +11,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Burger from "../mobileMenu/Burger";
 
 function MegaMenu() {
+  const menuRef = useRef();
+  const menuOverlayRef = useRef();
+  const subMenuRef = useRef();
+  const iRef = useRef();
+  const titleRef = useRef();
+  const currentMenuTitleRef = useRef();
+  const mobileMenuHeadRef = useRef();
   const dispatch = useDispatch();
   const megaMenu = useSelector((state) => state.megaMenu.megaMenu);
   const [menu, setmenu] = useState([]);
@@ -27,6 +34,54 @@ function MegaMenu() {
     }
   }, [window.pageYOffset]);
 
+  let subMenu;
+
+  function showSubMenu(hasChildren) {
+    // console.log("hasChildren.childNodes[1]", hasChildren.childNodes[1]);
+    // subMenu = subMenuRef.current
+    subMenu = hasChildren.childNodes[1];
+    console.log("subMenu", hasChildren);
+    subMenu.classList.add("active");
+    subMenu.style.animation = "slideLeft 0.5s ease forwards";
+    // const menuTitle = iRef.current.parentNode.childNodes[0].textContent;
+
+    // currentMenuTitleRef.current.innerHTML = menuTitle;
+    mobileMenuHeadRef.current.classList.add("active");
+    const title = titleRef.current;
+  }
+  function hideSubMenu() {
+    subMenu.style.animation = "slideRight 0.5s ease forwards";
+    setTimeout(() => {
+      subMenu.classList.remove("active");
+    }, 300);
+    currentMenuTitleRef.current.innerHTML = "";
+    mobileMenuHeadRef.current.classList.remove("active");
+  }
+  const handelMenu = (e) => {
+    // console.log("2");
+    if (!menuRef.current.classList.contains("active")) {
+      return;
+    }
+    if (e.target.closest(".menu-item-has-children")) {
+      const hasChildren = e.target.closest(".menu-item-has-children");
+      // console.log("hasChildren", hasChildren);
+      showSubMenu(hasChildren);
+    }
+  };
+  function toggleMenu() {
+    menuRef.current.classList.toggle("active");
+
+    menuOverlayRef.current.classList.toggle("active");
+  }
+  window.onresize = function () {
+    if (this.innerWidth > 991) {
+      if (menuRef.current.classList.contains("active")) {
+        // toggleMenu();
+        // console.log("hi");
+      }
+    }
+  };
+
   return (
     <>
       <header className={`header ${move ? "move" : ""}`}>
@@ -41,17 +96,26 @@ function MegaMenu() {
                   />
                 </div>
               )}
-              <div className="menu-overlay"></div>
-              <nav className="menu ">
-                <div className="mobile-menu-head">
-                  <div className="go-back">
+              <div
+                className="menu-overlay"
+                ref={menuOverlayRef}
+                onClick={toggleMenu}
+              ></div>
+              <nav className="menu " ref={menuRef}>
+                <div className="mobile-menu-head" ref={mobileMenuHeadRef}>
+                  <div className="go-back" onClick={hideSubMenu}>
                     <i className="fa fa-angle-left"></i>
                   </div>
-                  <div className="current-menu-title"></div>
-                  <div className="mobile-menu-close">&times;</div>
+                  <div
+                    className="current-menu-title"
+                    ref={currentMenuTitleRef}
+                  ></div>
+                  <div className="mobile-menu-close" onClick={toggleMenu}>
+                    &times;
+                  </div>
                 </div>
 
-                <ul className="menu-main">
+                <ul className="menu-main" onClick={(e) => handelMenu(e)}>
                   {/* <pre>{JSON.stringify(menu)} </pre> */}
                   {menu.map((m) => {
                     return (
@@ -60,12 +124,18 @@ function MegaMenu() {
                           href={`/${
                             m.slug.charAt(0).toUpperCase() + m.slug.slice(1)
                           }`}
+                          ref={titleRef}
                         >
                           {/* href={`/${m.slug.charAt(0).toUpperCase() + m.slug.slice(1)}`} */}
                           {m.title.toUpperCase() + " "}
-                          {m.children && <i className="fa fa-angle-down"></i>}
+                          {m.children && (
+                            <i className="fa fa-angle-down" ref={iRef}></i>
+                          )}
                         </a>
-                        <div className="sub-menu mega-menu mega-menu-column-4">
+                        <div
+                          className="sub-menu mega-menu mega-menu-column-4"
+                          ref={subMenuRef}
+                        >
                           {m.children &&
                             m.children.map((mc) => {
                               let ChildSlug = mc.slug.split("-");
@@ -134,8 +204,8 @@ function MegaMenu() {
             </div>
 
             <div className="header-item item-right">
-             
-              <div className="mobile-menu-trigger">
+              {/* <img src="https://new.sevendisplays.com/_nuxt/img/seven-logo.921eb25.svg" alt="" /> */}
+              <div className="mobile-menu-trigger" onClick={toggleMenu}>
                 <span></span>
               </div>
             </div>
