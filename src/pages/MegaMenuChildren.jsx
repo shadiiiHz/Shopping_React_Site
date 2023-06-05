@@ -8,12 +8,19 @@ import MenuChild from "../components/megaMenuChild/MenuChild";
 
 import MegaMenu from "../components/menu/MegaMenu";
 import Navbar from "../components/navbar/Navbar";
+import ScrollUp from "../components/scroll up/ScrollUp";
 import Sidebar from "../components/sidbar/Sidebar";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 2500px;
+  margin-bottom: 30px;
+  ${mobile({
+    width: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+  })}
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -25,6 +32,10 @@ const Children = styled.div`
   flex-wrap: wrap;
   justify-content: start;
   background-color: white;
+  ${mobile({
+    alignItems: "center",
+    margin: " 0 auto",
+  })}
 `;
 const DesChildren = styled.div`
   flex: 9;
@@ -32,23 +43,6 @@ const DesChildren = styled.div`
   flex-direction: column;
   justify-content: start;
   background-color: white;
-`;
-const Title = styled.h5`
-  font-weight: 650;
-  font-size: 20px;
-  margin: 25px 0px 0px 25px;
-`;
-const Des = styled.h5`
-  font-weight: 400;
-  font-size: 17px;
-  margin: 25px 0px 17px 25px;
-  line-height: 1.5;
-`;
-const Hr = styled.hr`
-  display: block;
-  margin: 25px 0px 0px 25px;
-  border-style: inset;
-  border-width: 1.5px;
 `;
 const Section = styled.div`
   margin: 0px 0px 0px 25px;
@@ -61,6 +55,21 @@ function MegaMenuChildren() {
   const [children, setChildren] = useState([]);
 
   const [breadcrumb, setBreadcrumb] = useState([]);
+
+  const [showButton, setShowButton] = useState(false);
+  useEffect(() => {
+    const handelScrollButtonVisiblity = () => {
+      if (window.pageYOffset > 150) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+    window.addEventListener("scroll", handelScrollButtonVisiblity);
+    return () => {
+      window.removeEventListener("scroll", handelScrollButtonVisiblity);
+    };
+  }, [window.pageYOffset]);
 
   useEffect(() => {
     axios
@@ -134,6 +143,7 @@ function MegaMenuChildren() {
             </Children>
           </DesChildren>
         </Wrapper>
+        {showButton && <ScrollUp />}
       </Container>
     </>
   );

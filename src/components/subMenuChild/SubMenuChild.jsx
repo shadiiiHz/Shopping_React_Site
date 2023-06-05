@@ -4,12 +4,13 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { keyframes } from "styled-components";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import { mobile } from "../../responsive";
 const Container = styled.div`
   flex: 1;
   margin: 10px;
   min-width: 290px;
   max-width: 290px;
-  height: 650px;
+
   border: 1px solid rgba(0, 0, 0, 0.125);
   box-sizing: border-box;
   display: flex;
@@ -17,12 +18,18 @@ const Container = styled.div`
   justify-content: start;
   background-color: #fff;
   flex-direction: column;
-  position: relative;
+
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   &:hover {
     border-left: 3px solid #fc6c00;
     box-shadow: 0 0 10px #ccc;
   }
+  ${mobile({
+    minWidth: "450px",
+    maxWidth: "450px",
+    justifyContent: "center",
+    marginLeft: " 0px",
+  })}
 `;
 const Title = styled.h1`
   color: black;
@@ -84,7 +91,6 @@ const AnimatedBackground = styled.div`
   background-size: 700px 104px;
   height: 243px;
   width: 230px;
-  position: relative;
 `;
 const BackgroundMasker = styled.div`
   background-color: #fff;
@@ -136,8 +142,24 @@ const PriceInfo = styled.div`
   justify-content: center;
 `;
 function SubMenuChild({ slug, product }) {
-//   console.log(product);
+  console.log(product);
+  ///////////////////////date////////////////////
+  const Working_day = product?.product_info?.working_day.length;
+  const Duration = product?.product_info?.working_day[0]?.duration;
 
+  const currentDate = new Date();
+  var result = currentDate.setDate(currentDate.getDate() + Number(Duration));
+  result = new Date(result);
+
+  const date = `${
+    result.getDate() < 10 ? `0${result.getDate()}` : `${result.getDate()}`
+  }.${
+    result.getMonth() < 10
+      ? `0${result.getMonth() + 1}`
+      : `${result.getMonth() + 1}`
+  }.${result.getFullYear().toString().substr(-2)}`;
+  // console.log(date);
+  ////////////////////////////////////////////////////
   const [Error, setError] = useState(false);
   /////////////////decodeHTMLEntities////////////////////////////
   var element = document.createElement("div");
@@ -158,7 +180,6 @@ function SubMenuChild({ slug, product }) {
   //   console.log("feature_desc",decodeHTMLEntities(product.feature_desc));
   return (
     <Container>
-      {/* <div dangerouslySetInnerHTML={{ __html: decodeHTMLEntities(product.feature_desc) }}></div> */}
       <Title>{product.title}</Title>
 
       {Error ? (
@@ -197,7 +218,7 @@ function SubMenuChild({ slug, product }) {
         <DeliveryType>
           {product?.product_info?.working_day[0]?.duration_translation?.title}
         </DeliveryType>
-        <DeliveryDate>(14.06.23)</DeliveryDate>
+        <DeliveryDate>({date})</DeliveryDate>
       </Delivery>
       <Price>
         <DeliveryDiningIcon />

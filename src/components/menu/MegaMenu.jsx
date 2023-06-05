@@ -15,6 +15,9 @@ function MegaMenu() {
   const megaMenu = useSelector((state) => state.megaMenu.megaMenu);
   const [menu, setmenu] = useState([]);
   const [move, setMove] = useState(false);
+  const user = useSelector((state) => state.user.isUser);
+  let isUser = user;
+  console.log(isUser)
   useEffect(() => {
     getMegaMenu(dispatch);
     setmenu(megaMenu);

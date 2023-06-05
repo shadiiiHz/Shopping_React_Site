@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { keyframes } from "styled-components";
+import { mobile } from "../../responsive";
 const Container = styled.div`
   flex: 1;
   margin: 10px;
   min-width: 280px;
   max-width: 280px;
-  height: 350px;
+
   border: 1px solid rgba(0, 0, 0, 0.125);
   box-sizing: border-box;
   display: flex;
@@ -16,12 +17,19 @@ const Container = styled.div`
   justify-content: start;
   background-color: #fff;
   flex-direction: column;
-  position: relative;
+
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   &:hover {
     border-left: 3px solid #fc6c00;
     box-shadow: 0 0 10px #ccc;
   }
+  ${mobile({
+    minWidth: "470px",
+    maxWidth: "470px",
+
+    justifyContent: "center",
+    marginLeft: " 0px",
+  })}
 `;
 const Title = styled.h1`
   color: black;
@@ -42,7 +50,6 @@ const Btn = styled.button`
   margin: 10px 0px;
 `;
 const ImgNotFound = styled.div`
-  
   background-color: #fff;
   width: 230px;
 `;
@@ -65,7 +72,6 @@ const AnimatedBackground = styled.div`
   background-size: 700px 104px;
   height: 243px;
   width: 230px;
-  position: relative;
 `;
 const BackgroundMasker = styled.div`
   background-color: #fff;

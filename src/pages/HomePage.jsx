@@ -12,18 +12,19 @@ import Product from "../components/product/Product";
 import Sidebar from "../components/sidbar/Sidebar";
 import { getMegaMenu } from "../redux/apiCalls";
 import { mobile } from "../responsive";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ScrollUp from "../components/scroll up/ScrollUp";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 2750px;
   width: "100vh";
-  
+
   ${mobile({
     height: "5200px",
     width: "100vh",
     justifyContent: "center",
     alignItems: "center",
-   
   })}
 `;
 const Section = styled.div`
@@ -32,8 +33,8 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
-  ${mobile({ margin: " 0px 300px 27px"})}
+
+  ${mobile({ margin: " 0px 300px 27px" })}
 `;
 const Home = styled.div`
   display: flex;
@@ -49,7 +50,6 @@ const HomeSecetion = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  ${mobile({ })}
 `;
 const Products = styled.div`
   padding: 20px;
@@ -57,19 +57,34 @@ const Products = styled.div`
   flex-wrap: wrap;
   justify-content: start;
   background-color: white;
-  display: ${({ open }) => open ? 'none' : ''};
+ 
   ${mobile({
     alignItems: "center",
-    
-    margin: " 0 auto"
+
+    margin: " 0 auto",
   })}
 `;
+// display: ${({ open }) => (open ? "none" : "")};
 function HomePage() {
-  
   const [product, setProducts] = useState([]);
   const [description, setDescription] = useState([]);
   const [sliderImage, setSliderImage] = useState([]);
-  const openClose = useSelector((state) => state.menuToggle.menuOpen);
+  // const openClose = useSelector((state) => state.menuToggle.menuOpen);
+
+  const [showButton, setShowButton] = useState(false);
+  useEffect(() => {
+    const handelScrollButtonVisiblity = () => {
+      if (window.pageYOffset > 150) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+    window.addEventListener("scroll", handelScrollButtonVisiblity);
+    return () => {
+      window.removeEventListener("scroll", handelScrollButtonVisiblity);
+    };
+  }, [window.pageYOffset]);
 
   useEffect(() => {
     axios
@@ -83,7 +98,7 @@ function HomePage() {
       .catch((error) => {
         // handle error
       });
-  }, [openClose]);
+  }, []);
   return (
     <>
       <Container>
@@ -95,15 +110,16 @@ function HomePage() {
         <Home>
           <Sidebar />
           <HomeSecetion>
-            <Products open={openClose}>
+            <Products >
               {product.map((p, index) => {
                 return <Product product={product} index={index} key={p.id} />;
               })}
             </Products>
+            {/* open={openClose} */}
           </HomeSecetion>
         </Home>
         <Section dangerouslySetInnerHTML={{ __html: description }} />
-        
+        {showButton && <ScrollUp />}
       </Container>
     </>
   );

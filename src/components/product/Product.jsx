@@ -17,7 +17,7 @@ const Container = styled.div`
   justify-content: start;
   background-color: #fff;
   flex-direction: column;
-  position: relative;
+
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   &:hover {
     border-left: 3px solid #fc6c00;
@@ -73,7 +73,7 @@ function Product({ product, index }) {
   ].product_info?.default_menu?.menu_t?.title?.replaceAll(" ", "-");
   const parentRoute =
     product[index].product_info?.default_menu?.parent?.menu_t?.title;
-console.log( product[index])
+// console.log( product[index])
   //translate to german
   function makeSortString(s) {
     var translate = {

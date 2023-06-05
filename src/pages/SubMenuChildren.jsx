@@ -6,12 +6,18 @@ import Announcement from "../components/announcment/Announcement";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import MegaMenu from "../components/menu/MegaMenu";
 import Navbar from "../components/navbar/Navbar";
+import ScrollUp from "../components/scroll up/ScrollUp";
 import Sidebar from "../components/sidbar/Sidebar";
 import SubMenuChild from "../components/subMenuChild/SubMenuChild";
+import { mobile } from "../responsive";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  
+  ${mobile({
+    width: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+  })}
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -23,6 +29,10 @@ const Children = styled.div`
   flex-wrap: wrap;
   justify-content: start;
   background-color: white;
+  ${mobile({
+    alignItems: "center",
+    margin: " 0 auto",
+  })}
 `;
 const DesChildren = styled.div`
   flex: 9;
@@ -59,6 +69,21 @@ function SubMenuChildren() {
   const [text, setText] = useState("");
   const [product, setProduct] = useState([]);
   const [cover_image, setCover_image] = useState("");
+
+  const [showButton, setShowButton] = useState(false);
+  useEffect(() => {
+    const handelScrollButtonVisiblity = () => {
+      if (window.pageYOffset > 150) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+    window.addEventListener("scroll", handelScrollButtonVisiblity);
+    return () => {
+      window.removeEventListener("scroll", handelScrollButtonVisiblity);
+    };
+  }, [window.pageYOffset]);
 
   useEffect(() => {
     axios
@@ -149,6 +174,7 @@ function SubMenuChildren() {
         <Section
           dangerouslySetInnerHTML={{ __html: decodeHTMLEntities(text) }}
         />
+        {showButton && <ScrollUp />}
       </Container>
     </>
   );
