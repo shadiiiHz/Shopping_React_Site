@@ -118,7 +118,7 @@ function SubMenuChildren() {
         `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/menu/breadcrumb?menu_slug=${Slug}`
       )
       .then((response) => {
-        //   console.log(response.data.body);
+          console.log(response.data.body);
         setBreadcrumb(response.data.body);
       })
       .catch((error) => {

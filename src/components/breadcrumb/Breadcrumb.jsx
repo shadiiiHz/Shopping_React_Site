@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -13,8 +13,28 @@ const Container = styled.div`
   margin: 0px 100px 12px;
 `;
 
-function Breadcrumb({ breadcrumb }) {
-  // console.log(breadcrumb.length)
+function Breadcrumb({
+  breadcrumb,
+  setBreadcrumb,
+  productTitle,
+  productSlug,
+  path,
+}) {
+  // console.log(path.split("/")[1])
+  useEffect(() => {
+    if (productTitle && productSlug) {
+    
+      setBreadcrumb((result) => [
+        ...result,
+        {
+          title: productTitle,
+          slug: productSlug,
+          level: "3",
+        },
+      ]);
+    }
+  }, [productTitle, productSlug]);
+
   const breadCrumbLength = breadcrumb.length;
 
   return (
@@ -30,21 +50,64 @@ function Breadcrumb({ breadcrumb }) {
               <HomeIcon />
             </Link>
             {breadcrumb &&
+              path &&
               breadcrumb.map((b) => {
-                console.log(b);
                 if (parseInt(b.level) === breadCrumbLength) {
                   return (
                     <Typography color="text.primary">{b.title}</Typography>
                   );
-                } else {
-    
+                } else if (parseInt(b.level) === breadCrumbLength - 1) {
+                 
                   let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
                   let Slug = item.split("-");
                   for (let i = 0; i < Slug.length; i++) {
                     Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
                   }
                   Slug = Slug.join("-");
-               
+
+                  return (
+                    <Link
+                      underline="hover"
+                      href={`/${path.split("/")[1]}/${Slug}`}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      {b.title}
+                    </Link>
+                  );
+                } else {
+                  let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
+                  let Slug = item.split("-");
+                  for (let i = 0; i < Slug.length; i++) {
+                    Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
+                  }
+                  Slug = Slug.join("-");
+
+                  return (
+                    <Link
+                      underline="hover"
+                      href={`/${Slug}`}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      {b.title}
+                    </Link>
+                  );
+                }
+              })}
+            {breadcrumb &&
+              !path &&
+              breadcrumb.map((b) => {
+                if (parseInt(b.level) === breadCrumbLength) {
+                  return (
+                    <Typography color="text.primary">{b.title}</Typography>
+                  );
+                } else {
+                  let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
+                  let Slug = item.split("-");
+                  for (let i = 0; i < Slug.length; i++) {
+                    Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
+                  }
+                  Slug = Slug.join("-");
+
                   return (
                     <Link
                       underline="hover"

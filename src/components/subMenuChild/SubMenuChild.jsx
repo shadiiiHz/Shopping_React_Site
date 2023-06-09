@@ -5,6 +5,7 @@ import { keyframes } from "styled-components";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import { mobile } from "../../responsive";
+import { Link } from "react-router-dom";
 const Container = styled.div`
   flex: 1;
   margin: 10px;
@@ -142,7 +143,7 @@ const PriceInfo = styled.div`
   justify-content: center;
 `;
 function SubMenuChild({ slug, product }) {
-  console.log(product);
+  // console.log(product.slug);
   ///////////////////////date////////////////////
   const Working_day = product?.product_info?.working_day.length;
   const Duration = product?.product_info?.working_day[0]?.duration;
@@ -175,12 +176,19 @@ function SubMenuChild({ slug, product }) {
 
     return str;
   }
-  //   console.log("benefit_desc",decodeHTMLEntities(product.benefit_desc));
-  //   console.log("item_desc",decodeHTMLEntities(product.item_desc));
-  //   console.log("feature_desc",decodeHTMLEntities(product.feature_desc));
+  /////////////slug//////////////
+  const Slug = product.slug.charAt(0).toUpperCase() + product.slug.slice(1);
+  let productSlug = Slug.split("-");
+  for (let i = 0; i < productSlug.length; i++) {
+    productSlug[i] = productSlug[i][0].toUpperCase() + productSlug[i].substr(1);
+  }
+  productSlug = productSlug.join("-");
+
   return (
     <Container>
-      <Title>{product.title}</Title>
+      <Link to={`${productSlug}`} style={{ textDecoration: "none"}}>
+        <Title>{product.title}</Title>
+      </Link>
 
       {Error ? (
         <ImgNotFound>
@@ -228,13 +236,12 @@ function SubMenuChild({ slug, product }) {
           <PriceInfo>€*</PriceInfo>
         </PriceInfo>
       </Price>
-      {/* <Link to={`${ChildSlug}`} style={{ textDecoration: "none" }}> */}
-
-      <Btn>
-        Zur Produktseite
-        <ArrowRightIcon />
-      </Btn>
-      {/* </Link> */}
+      <Link to={`${productSlug}`} style={{ textDecoration: "none" }}>
+        <Btn>
+          Zur Produktseite
+          <ArrowRightIcon />
+        </Btn>
+      </Link>
     </Container>
   );
 }

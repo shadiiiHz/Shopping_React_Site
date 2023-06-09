@@ -81,7 +81,6 @@ function MenuChild({ slug, child }) {
   // console.log(slug);
   const [Error, setError] = useState(false);
   const Slug = slug.charAt(0).toUpperCase() + slug.slice(1);
-  // console.log(child.slug);
   let ChildSlug = child.slug.split("-");
   for (let i = 0; i < ChildSlug.length; i++) {
     ChildSlug[i] = ChildSlug[i][0].toUpperCase() + ChildSlug[i].substr(1);

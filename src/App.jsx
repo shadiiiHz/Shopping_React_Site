@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 
 import MegaMenuChildren from "./pages/MegaMenuChildren";
 import Profile from "./pages/Profile";
+import SingleProduct from "./pages/SingleProduct";
 import SubMenuChildren from "./pages/SubMenuChildren";
 
 function App() {
@@ -24,7 +25,12 @@ function App() {
             path="/:megaMenu/:subMenuChildren"
             element={<SubMenuChildren />}
           />
+          <Route
+            path="/:megaMenu/:subMenuChildren/:singleProduct"
+            element={<SingleProduct />}
+          />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:options" element={<Profile />} />
         </Routes>
         <Footer />
       </BrowserRouter>
