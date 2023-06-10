@@ -186,7 +186,7 @@ function SubMenuChild({ slug, product }) {
 
   return (
     <Container>
-      <Link to={`${productSlug}`} style={{ textDecoration: "none"}}>
+      <Link to={`${productSlug}`} style={{ textDecoration: "none" }}>
         <Title>{product.title}</Title>
       </Link>
 
@@ -236,7 +236,7 @@ function SubMenuChild({ slug, product }) {
           <PriceInfo>€*</PriceInfo>
         </PriceInfo>
       </Price>
-      <Link to={`${productSlug}`} style={{ textDecoration: "none" }}>
+      <Link to={`${productSlug}`} state={ product.title} style={{ textDecoration: "none" }}>
         <Btn>
           Zur Produktseite
           <ArrowRightIcon />

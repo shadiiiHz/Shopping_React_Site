@@ -50,7 +50,7 @@ const Section = styled.div`
 function MegaMenuChildren() {
   const location = useLocation();
   const slug = location.pathname.split("/")[1];
-
+  const path = location.pathname;
   const [text, setText] = useState("");
   const [children, setChildren] = useState([]);
 
@@ -129,7 +129,7 @@ function MegaMenuChildren() {
         <Announcement />
         <Navbar />
         <MegaMenu />
-        <Breadcrumb breadcrumb={breadcrumb} />
+        <Breadcrumb breadcrumb={breadcrumb} path={path}/>
         <Wrapper>
           <Sidebar />
           <DesChildren>

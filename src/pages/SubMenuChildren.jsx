@@ -56,7 +56,8 @@ function SubMenuChildren() {
   ////////////slug////////////
   const location = useLocation();
   let slug = location.pathname.split("/")[2];
- 
+  const path = location.pathname;
+  
   slug = slug.charAt(0).toLowerCase() + slug.slice(1);
   let Slug = slug.split("-");
   for (let i = 0; i < Slug.length; i++) {
@@ -153,7 +154,7 @@ function SubMenuChildren() {
         ) : (
           ""
         )}
-        <Breadcrumb breadcrumb={breadcrumb} />
+        <Breadcrumb breadcrumb={breadcrumb} path={path} />
         <Wrapper>
           <Sidebar />
           <DesChildren>

@@ -9,12 +9,11 @@ import Navbar from "../components/navbar/Navbar";
 import ScrollUp from "../components/scroll up/ScrollUp";
 import { mobile } from "../responsive";
 
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 // import required modules
-import { Pagination ,FreeMode} from "swiper";
+import { Pagination, FreeMode } from "swiper";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,16 +44,15 @@ const Product = styled.div`
   margin-top: 30px;
 `;
 const FlexRow = styled.div`
-  justify-content: center;
+  justify-content: start;
   display: flex;
   padding-top: 20px;
+  padding-bottom: 20px;
 `;
 const Thumbnail = styled.div`
   padding-left: 20px;
 `;
-const Img = styled.img`
-
-`;
+const Img = styled.img``;
 const ImgThumbnail = styled.img`
   margin: 5px;
   &:hover {
@@ -62,9 +60,10 @@ const ImgThumbnail = styled.img`
   }
 `;
 
-
 const SingleProduct = () => {
   const location = useLocation();
+  // console.log()
+  const productTitle = location.state;
   const path = location.pathname;
   const slug = location.pathname.split("/")[3];
   //   console.log(slug)
@@ -80,8 +79,14 @@ const SingleProduct = () => {
 
   const [showButton, setShowButton] = useState(false);
   const [parentSlug, setParentSlug] = useState("");
-  const [productTitle, setProductTitle] = useState("");
-  const [breadcrumb, setBreadcrumb] = useState([]);
+  // const [productTitle, setProductTitle] = useState("");
+  const [breadcrumb, setBreadcrumb] = useState([
+    {
+      title: productTitle,
+      slug: productSlug,
+      level: "3",
+    },
+  ]);
   const [benefit_desc, setBenefit_desc] = useState("");
   const [feature_desc, setFeature_desc] = useState("");
   const [item_desc, setItem_desc] = useState("");
@@ -133,7 +138,7 @@ const SingleProduct = () => {
       )
       .then((response) => {
         // console.log(response.data.body.benefit_desc);
-        setProductTitle(response.data.body.title);
+        // setProductTitle(response.data.body.title);
         setBenefit_desc(response.data.body.benefit_desc);
         setFeature_desc(response.data.body.feature_desc);
         setItem_desc(response.data.body.item_desc);
@@ -164,9 +169,13 @@ const SingleProduct = () => {
         `https://new-api.sevendisplays.com/api/v1/user/site/menus/fetch/menu/breadcrumb?product_slug=${productSlug}`
       )
       .then((response) => {
-        // console.log(response.data?.body[1]?.slug);
+        // console.log(breadcrumb);
         setParentSlug(response.data?.body[1]?.slug);
-        setBreadcrumb(response.data.body);
+        setBreadcrumb((result) => [
+          response.data.body[0],
+          response.data.body[1],
+          ...result,
+        ]);
       })
       .catch((error) => {
         // handle error
@@ -194,13 +203,8 @@ const SingleProduct = () => {
         <Announcement />
         <Navbar />
         <MegaMenu />
-        <Breadcrumb
-          breadcrumb={breadcrumb}
-          setBreadcrumb={setBreadcrumb}
-          productTitle={productTitle}
-          productSlug={productSlug}
-          path={path}
-        />
+        {/* <pre>{JSON.stringify(breadcrumb)}</pre> */}
+        <Breadcrumb breadcrumb={breadcrumb} path={path} />
         <Wrapper>
           <Product>
             {showDefaultImg ? (
@@ -252,56 +256,62 @@ const SingleProduct = () => {
                   })}
               </Thumbnail>
             </FlexRow> */}
-            <Swiper
-              slidesPerView={4}
-              spaceBetween={30}
-              centeredSlides={true}
-              freeMode={true}
-              pagination={{
-                clickable: true,
-              }}
-              modules={[FreeMode, Pagination]}
-              className="mySwiper"
-              style={{ width: "900px", height: "110px" ,    borderBottom: "2px solid #ddd",
-              borderTop: "2px solid #ddd",}}
-            >
-              {portfolios &&
-                portfolios.map((data, i) => {
-                  let index = i + portfolios[0].id;
-                  return (
-                    <>
-                      <SwiperSlide
-                        style={{
-                          textAlign: "center",
-                          fontSize: "18px",
-                          background: "#f9f9f9",
-                          display: "flex",
-                          justifyContent: "start",
-                          alignItems: "center",
-                        }}
-                      >
-                        
-                        <ImgThumbnail
+            {portfolios.length !== 0 ? (
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                centeredSlides={true}
+                freeMode={true}
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[FreeMode, Pagination]}
+                className="mySwiper"
+                style={{
+                  width: "900px",
+                  height: "110px",
+                  borderBottom: "2px solid #ddd",
+                  borderTop: "2px solid #ddd",
+                }}
+              >
+                {portfolios &&
+                  portfolios.map((data, i) => {
+                    let index = i + portfolios[0].id;
+                    return (
+                      <>
+                        <SwiperSlide
                           style={{
-                            border:
-                              wordData.id == index ? "2px solid orange" : "",
+                            textAlign: "center",
+                            fontSize: "18px",
+                            background: "#f9f9f9",
+                            display: "flex",
+                            justifyContent: "start",
+                            alignItems: "center",
+                          }}
+                        >
+                          <ImgThumbnail
+                            style={{
+                              border:
+                                wordData.id == index ? "2px solid orange" : "",
                               display: "block",
                               width: "100%",
                               height: "100%",
-                              
+
                               objectFit: "cover",
-                          }}
-                          src={`https://new-api.sevendisplays.com/storage/image/portfolio/${data.path}`}
-                          onClick={() => handleClick(i)}
-                          height="70"
-                          width="100"
-                        />
-                   
-                      </SwiperSlide>
-                    </>
-                  );
-                })}
-            </Swiper>
+                            }}
+                            src={`https://new-api.sevendisplays.com/storage/image/portfolio/${data.path}`}
+                            onClick={() => handleClick(i)}
+                            height="70"
+                            width="100"
+                          />
+                        </SwiperSlide>
+                      </>
+                    );
+                  })}
+              </Swiper>
+            ) : (
+              ""
+            )}
           </Product>
 
           {/* <ProductSlider  /> */}

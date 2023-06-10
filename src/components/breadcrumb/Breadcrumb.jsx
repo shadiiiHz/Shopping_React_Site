@@ -13,28 +13,8 @@ const Container = styled.div`
   margin: 0px 100px 12px;
 `;
 
-function Breadcrumb({
-  breadcrumb,
-  setBreadcrumb,
-  productTitle,
-  productSlug,
-  path,
-}) {
-  // console.log(path.split("/")[1])
-  useEffect(() => {
-    if (productTitle && productSlug) {
-    
-      setBreadcrumb((result) => [
-        ...result,
-        {
-          title: productTitle,
-          slug: productSlug,
-          level: "3",
-        },
-      ]);
-    }
-  }, [productTitle, productSlug]);
-
+function Breadcrumb({ breadcrumb, path }) {
+  
   const breadCrumbLength = breadcrumb.length;
 
   return (
@@ -49,84 +29,37 @@ function Breadcrumb({
             >
               <HomeIcon />
             </Link>
-            {breadcrumb &&
-              path &&
-              breadcrumb.map((b) => {
-                if (parseInt(b.level) === breadCrumbLength) {
-                  return (
-                    <Typography color="text.primary">{b.title}</Typography>
-                  );
-                } else if (parseInt(b.level) === breadCrumbLength - 1) {
-                 
-                  let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
-                  let Slug = item.split("-");
-                  for (let i = 0; i < Slug.length; i++) {
-                    Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
-                  }
-                  Slug = Slug.join("-");
-
-                  return (
-                    <Link
-                      underline="hover"
-                      href={`/${path.split("/")[1]}/${Slug}`}
-                      style={{ color: "black", textDecoration: "none" }}
-                    >
-                      {b.title}
-                    </Link>
-                  );
-                } else {
-                  let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
-                  let Slug = item.split("-");
-                  for (let i = 0; i < Slug.length; i++) {
-                    Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
-                  }
-                  Slug = Slug.join("-");
-
-                  return (
-                    <Link
-                      underline="hover"
-                      href={`/${Slug}`}
-                      style={{ color: "black", textDecoration: "none" }}
-                    >
-                      {b.title}
-                    </Link>
-                  );
+            {breadcrumb.map((b) => {
+              if (parseInt(b.level) === breadCrumbLength) {
+                return <Typography color="text.primary">{b.title}</Typography>;
+              } else {
+                let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
+                let Slug = item.split("-");
+                for (let i = 0; i < Slug.length; i++) {
+                  Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
                 }
-              })}
-            {breadcrumb &&
-              !path &&
-              breadcrumb.map((b) => {
-                if (parseInt(b.level) === breadCrumbLength) {
-                  return (
-                    <Typography color="text.primary">{b.title}</Typography>
-                  );
-                } else {
-                  let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
-                  let Slug = item.split("-");
-                  for (let i = 0; i < Slug.length; i++) {
-                    Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
-                  }
-                  Slug = Slug.join("-");
-
-                  return (
-                    <Link
-                      underline="hover"
-                      href={`/${Slug}`}
-                      style={{ color: "black", textDecoration: "none" }}
-                    >
-                      {b.title}
-                    </Link>
-                  );
-                }
-              })}
+                Slug = Slug.join("-");
+                console.log(path.split("/")[parseInt(b.level - 1)]);
+                return (
+                  <Link
+                    underline="hover"
+                    href={
+                      path.split("/")[parseInt(b.level - 1)]
+                        ? `/${path.split("/")[parseInt(b.level - 1)]}/${
+                            path.split("/")[parseInt(b.level)]
+                          }`
+                        : `/${path.split("/")[parseInt(b.level)]}`
+                    }
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    {b.title}
+                  </Link>
+                );
+              }
+            })}
           </Breadcrumbs>
         </div>
-        {/* <Ol>
-          {breadcrumb &&
-            breadcrumb.map((b) => {
-              return <Li>{b.title}</Li>;
-            })}
-        </Ol> */}
+     
       </Container>
     </>
   );
