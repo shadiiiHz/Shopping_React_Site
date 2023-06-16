@@ -100,8 +100,8 @@ function Footer() {
                 {section.pages &&
                   section.pages.map((page) => {
                     return (
-                      <Link style={{ textDecoration: "none" }}>
-                        <Pages key={page.id}>{page.title}</Pages>
+                      <Link style={{ textDecoration: "none" }} key={page.id}>
+                        <Pages>{page.title}</Pages>
                       </Link>
                     );
                   })}

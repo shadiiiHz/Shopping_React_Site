@@ -29,9 +29,9 @@ function Breadcrumb({ breadcrumb, path }) {
             >
               <HomeIcon />
             </Link>
-            {breadcrumb.map((b) => {
+            {breadcrumb.map((b, index) => {
               if (parseInt(b.level) === breadCrumbLength) {
-                return <Typography color="text.primary">{b.title}</Typography>;
+                return <Typography color="text.primary" key={b.title}>{b.title}</Typography>;
               } else {
                 let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
                 let Slug = item.split("-");
@@ -39,7 +39,7 @@ function Breadcrumb({ breadcrumb, path }) {
                   Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
                 }
                 Slug = Slug.join("-");
-                console.log(path.split("/")[parseInt(b.level - 1)]);
+         
                 return (
                   <Link
                     underline="hover"
@@ -51,6 +51,7 @@ function Breadcrumb({ breadcrumb, path }) {
                         : `/${path.split("/")[parseInt(b.level)]}`
                     }
                     style={{ color: "black", textDecoration: "none" }}
+                    key={index}
                   >
                     {b.title}
                   </Link>

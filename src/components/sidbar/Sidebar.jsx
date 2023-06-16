@@ -19,7 +19,6 @@ const Container = styled.div`
   })}
 `;
 const Icon = styled.div`
-
   margin: 15px 30px 10px;
   font-weight: 500;
   display: flex;
@@ -29,7 +28,6 @@ const Icon = styled.div`
 const Title = styled.h5`
   font-weight: 500;
   margin-left: 5px;
- 
 `;
 const P = styled.p`
   font-weight: 500;
@@ -64,15 +62,15 @@ function Sidebar() {
         <Icon>
           <MenuIcon sx={{ color: "orange" }} /> <Title>UNSERE PRODUKTE</Title>
         </Icon>
-        {menu.map((m) => {
+        {menu.map((m, i) => {
           return (
             <>
-              <Ul key={m.menu_id}>
+              <Ul key={i}>
                 <Link style={{ textDecoration: "none", color: "black" }}>
                   <P>{m.title}</P>
                 </Link>
                 {m.children &&
-                  m.children.map((c) => {
+                  m.children.map((c, index) => {
                     let ChildSlug = c.slug.split("-");
                     for (let i = 0; i < ChildSlug.length; i++) {
                       ChildSlug[i] =
@@ -85,8 +83,9 @@ function Sidebar() {
                       <Link
                         to={`/${parentTitle}/${ChildSlug}`}
                         style={{ textDecoration: "none", color: "black" }}
+                        key={index}
                       >
-                        <Li key={c.slug}>
+                        <Li>
                           <ArrowRightIcon
                             sx={{ height: "13px", weight: "13px" }}
                           />

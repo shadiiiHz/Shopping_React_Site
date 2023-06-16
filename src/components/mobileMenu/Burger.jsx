@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { closeMenu, openMenu } from "../../redux/menuToggle";
@@ -103,7 +103,7 @@ const Burger = ({ menu }) => {
     } else {
       dispatch(closeMenu());
     }
-  }, [open]);
+  }, [open ,dispatch]);
 
   return (
     <>
@@ -120,7 +120,7 @@ const Burger = ({ menu }) => {
           menu.map((m) => {
             return (
               <>
-                <Link style={{ textDecoration: "none", color: "black" }}>
+                <Link style={{ textDecoration: "none", color: "black" }} key={m.slug}>
                   <P>{m.title.toUpperCase()}</P>
                 </Link>
                 {m.children &&
@@ -137,8 +137,9 @@ const Burger = ({ menu }) => {
                       <Link
                         to={`/${parentTitle}/${ChildSlug}`}
                         style={{ textDecoration: "none", color: "black" }}
+                        key={c.slug}
                       >
-                        <li key={c.slug}>
+                        <li >
                           <RadioButtonUncheckedIcon
                             sx={{ height: "5px", weight: "5px" }}
                           />
