@@ -23,6 +23,7 @@ const Container = styled.div`
     flexDirection: "column",
     height: "200px",
     justifyContent: "center",
+
   })}
 `;
 

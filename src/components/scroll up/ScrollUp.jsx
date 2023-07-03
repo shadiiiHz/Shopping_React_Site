@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { mobile } from "../../responsive";
 const Button = styled.button`
   position: fixed;
   display: flex;
@@ -19,6 +20,7 @@ const Button = styled.button`
   &:hover{
     background-color: #fd7e14;
   }
+ 
 `;
 function ScrollUp() {
   return (

@@ -2,7 +2,7 @@
   flex: 9;
   display: flex;
   flex-direction: column;
-  position: relative;
+ 
   width: 500px;
   background: #f1f1f1;
   word-break: break-all;
@@ -20,7 +20,7 @@
   cursor: pointer;
   border-bottom: 1px solid rgba(0, 0, 0, 0.274);
   box-sizing: content-box;
-  position: relative;
+  
   outline: none;
   border-top: 2px solid rgb(8, 8, 8);
 }
@@ -78,4 +78,14 @@ button {
 }
 .active-content {
   display: block;
+}
+@media (max-width: 991px) {
+  .tabContainer{
+    flex: 1;
+  
+   
+  }
+  .content img{
+    width: 100%;
+  }
 }

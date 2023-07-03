@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import HomeIcon from "@mui/icons-material/Home";
+import { mobile } from "../../responsive";
 const Container = styled.div`
   height: 80px;
   display: flex;
@@ -11,10 +12,13 @@ const Container = styled.div`
   justify-content: start;
   background-color: white;
   margin: 0px 100px 12px;
+  ${mobile({
+    margin: "0px 90px 12px",
+   
+  })}
 `;
 
 function Breadcrumb({ breadcrumb, path }) {
-  
   const breadCrumbLength = breadcrumb.length;
 
   return (
@@ -31,7 +35,11 @@ function Breadcrumb({ breadcrumb, path }) {
             </Link>
             {breadcrumb.map((b, index) => {
               if (parseInt(b.level) === breadCrumbLength) {
-                return <Typography color="text.primary" key={b.title}>{b.title}</Typography>;
+                return (
+                  <Typography color="text.primary" key={b.title}>
+                    {b.title}
+                  </Typography>
+                );
               } else {
                 let item = b.slug.charAt(0).toUpperCase() + b.slug.slice(1);
                 let Slug = item.split("-");
@@ -39,7 +47,7 @@ function Breadcrumb({ breadcrumb, path }) {
                   Slug[i] = Slug[i][0].toUpperCase() + Slug[i].substr(1);
                 }
                 Slug = Slug.join("-");
-         
+
                 return (
                   <Link
                     underline="hover"
@@ -60,7 +68,6 @@ function Breadcrumb({ breadcrumb, path }) {
             })}
           </Breadcrumbs>
         </div>
-     
       </Container>
     </>
   );
